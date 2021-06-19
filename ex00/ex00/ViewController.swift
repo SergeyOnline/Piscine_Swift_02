@@ -8,10 +8,8 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ViewControllerDelegate {
 	
-	
-
 	var tableVeiw: UITableView!
 
 	let group = Group()
@@ -39,13 +37,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     }
 	
+	func addPersonFromOtherVC(person: Person) {
+		group.addNewPerson(person)
+		tableVeiw.reloadData()
+	}
+	
 	//MARK: - Actions
 	
 	@objc func addBarButtonAction(sender: UIBarButtonItem) {
 		print("Add button")
 		let edditingVC = EdditingViewController()
+		edditingVC.delegate = self
 		self.navigationController?.pushViewController(edditingVC, animated: true)
-//		self.addChild(edditingVC)
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -69,22 +72,48 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 			cell = UITableViewCell(style: .value1, reuseIdentifier: identifire)
 		}
 		
-		
-		let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 300, height: 20))
+		let nameLabel = UILabel()
 		nameLabel.text = group.getPersonAtIndex(indexPath.row)?.getName()
-		nameLabel.autoresizingMask = .flexibleRightMargin
+		nameLabel.translatesAutoresizingMaskIntoConstraints = false
+
 		
-		let dateLabel = UILabel(frame: CGRect(x: 100, y: 0, width: 100, height: 20))
+		let dateLabel = UILabel()
 		dateLabel.text = group.getPersonAtIndex(indexPath.row)?.getDayOfDeath()
-		dateLabel.autoresizingMask = .flexibleLeftMargin
 		
-		let descriptionLabel = UILabel(frame: CGRect(x: 0, y: 22, width: 300, height: 20))
+		let descriptionLabel = UILabel()
 		descriptionLabel.text = group.getPersonAtIndex(indexPath.row)?.getDescription()
 		
-		cell!.addSubview(nameLabel)
-		cell!.addSubview(dateLabel)
-		cell!.addSubview(descriptionLabel)
+		
+		
+		
+		
+		let hStack = UIStackView(arrangedSubviews: [nameLabel, dateLabel])
+		hStack.axis = .horizontal
+		hStack.distribution = .fillEqually
+		hStack.spacing = 2
+		hStack.translatesAutoresizingMaskIntoConstraints = false
+		
+		
+		let vStack = UIStackView(arrangedSubviews: [hStack, descriptionLabel])
+		vStack.axis = .vertical
+		vStack.distribution = .equalSpacing
+		vStack.spacing = 2
+		vStack.translatesAutoresizingMaskIntoConstraints = false
+		
+		cell!.addSubview(vStack)
+		
+		vStack.heightAnchor.constraint(equalTo: cell!.heightAnchor, multiplier: 0.95).isActive = true
+		
+		vStack.leftAnchor.constraint(equalTo: cell!.leftAnchor, constant: 30).isActive = true
+		vStack.rightAnchor.constraint(equalTo: cell!.rightAnchor, constant: -10).isActive = true
+		
 		return cell!
 	}
 
 }
+
+
+protocol ViewControllerDelegate: class {
+	func addPersonFromOtherVC(person: Person)
+}
+

@@ -14,10 +14,10 @@ class Group {
 	var count = 0
 	
 	init() {
-		persons.append(Person(name: "Donald Pmurt", dayOfDeath: "01.01.01", description: "Some text"))
-		persons.append(Person(name: "Joffrey Baratheon", dayOfDeath: "01.01.01", description: "Some text"))
-		persons.append(Person(name: "Ben Colo", dayOfDeath: "01.01.01", description: "Some text"))
-		persons.append(Person(name: "Test Person", dayOfDeath: "03.07.66", description: "Test text"))
+		persons.append(Person(name: "Donald Pmurt", dayOfDeath: "01", description: "Some text"))
+		persons.append(Person(name: "Joffrey Baratheon", dayOfDeath: "02", description: "Some text"))
+		persons.append(Person(name: "Ben Colo", dayOfDeath: "03", description: "Some text"))
+		persons.append(Person(name: "Test Person", dayOfDeath: "04", description: "Test text"))
 		count = 4
 	}
 	
@@ -28,7 +28,7 @@ class Group {
 	
 	func removePersonAtIndex(_ index: Int) {
 		persons.remove(at: index)
-		count += 1
+		count -= 1
 	}
 	
 	func getPersonAtIndex(_ index: Int) -> Person? {
