@@ -14,7 +14,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
 	let group = Group()
 	
-	let identifire = "note"
+	var identifire = "cell"
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,11 +35,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		addButton.tintColor = .black
 		self.navigationItem.rightBarButtonItem = addButton
 
+		tableVeiw.reloadData()
     }
 	
 	func addPersonFromOtherVC(person: Person) {
-		group.addNewPerson(person)
-		tableVeiw.reloadData()
+		
+		if !person.getName().isEmpty && !person.getDayOfDeath().isEmpty {
+			group.addNewPerson(person)
+			tableVeiw.reloadData()
+		}
 	}
 	
 	//MARK: - Actions
@@ -63,14 +67,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 	
-	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: identifire, for: indexPath)
 		
-		if cell == nil {
-			cell = UITableViewCell(style: .value1, reuseIdentifier: identifire)
+		
+		let cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: identifire, for: indexPath)
+		
+		for value in cell!.subviews {
+			if value.isKind(of: UIStackView.self) {
+				value.removeFromSuperview()
+				break
+			}
 		}
+		
+//		if cell == nil {
+//			cell = UITableViewCell()
+//			identifire = cell!.reuseIdentifier!
+//			cell = UITableViewCell(style: .value2, reuseIdentifier: identifire)
+//		}
+		
 		
 		let nameLabel = UILabel()
 		nameLabel.text = group.getPersonAtIndex(indexPath.row)?.getName()
@@ -82,9 +97,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		
 		let descriptionLabel = UILabel()
 		descriptionLabel.text = group.getPersonAtIndex(indexPath.row)?.getDescription()
-		
-		
-		
+		descriptionLabel.font = UIFont(name: descriptionLabel.font.familyName, size: 15)
 		
 		
 		let hStack = UIStackView(arrangedSubviews: [nameLabel, dateLabel])
@@ -103,9 +116,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		cell!.addSubview(vStack)
 		
 		vStack.heightAnchor.constraint(equalTo: cell!.heightAnchor, multiplier: 0.95).isActive = true
-		
 		vStack.leftAnchor.constraint(equalTo: cell!.leftAnchor, constant: 30).isActive = true
-		vStack.rightAnchor.constraint(equalTo: cell!.rightAnchor, constant: -10).isActive = true
+		vStack.rightAnchor.constraint(equalTo: cell!.rightAnchor, constant: -20).isActive = true
 		
 		return cell!
 	}

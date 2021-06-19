@@ -40,24 +40,8 @@ class EdditingViewController: UIViewController {
 		textFieldName.addTarget(self, action: #selector(nameEdditingEndAction), for: .editingDidEndOnExit)
 		textFieldName.addTarget(self, action: #selector(nameEdditingChangedAction), for: .editingChanged)
 		
-		
-		
 		textFieldDescription = UITextView()
 		textFieldDescription.autocorrectionType = .no
-	
-		
-		
-	
-//		let textFieldDescription = UITextField()
-////		textFieldDescription.contentMode = .bottomLeft
-//		textFieldDescription.borderStyle = .line
-//		textFieldDescription.returnKeyType = .done
-//		textFieldDescription.autocorrectionType = .no
-//		textFieldDescription.clearButtonMode = .whileEditing
-//		textFieldDescription.contentVerticalAlignment = .top
-//
-//		textFieldDescription.addTarget(self, action: #selector(descriptionEdditingEndAction), for: .editingDidEndOnExit)
-//		textFieldDescription.addTarget(self, action: #selector(descriptionEdditingChangedAction), for: .editingChanged)
 		
 		let datePicker = UIDatePicker()
 		datePicker.calendar = .autoupdatingCurrent
@@ -77,10 +61,6 @@ class EdditingViewController: UIViewController {
 		textFieldName.heightAnchor.constraint(equalToConstant: 40).isActive = true
 		datePicker.heightAnchor.constraint(equalToConstant: 100).isActive = true
 		datePicker.topAnchor.constraint(equalTo: textFieldName.bottomAnchor, constant: 2).isActive = true
-//		textFieldDescription.heightAnchor.constraint(equalToConstant: 100).isActive = true
-//		textFieldDescription.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 2).isActive = true
-		
-		
 		
 		self.view.addSubview(vStack)
 	
@@ -90,7 +70,6 @@ class EdditingViewController: UIViewController {
 		vStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
 		vStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 		vStack.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9).isActive = true
-//		vStack.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.9).isActive = true
 
     }
 
@@ -98,7 +77,7 @@ class EdditingViewController: UIViewController {
 	private func setDate(date: Date) -> String {
 		let local = Locale.current
 		let components = date.description(with: local).components(separatedBy: CharacterSet(charactersIn: " ,"))
-		return components[3] + " " + components[2] + " " + components[5] + " " + components[7]
+		return components[3] + " " + components[2] + " " + components[5] + " " + components[7] + " " + components[8]
 	}
 
 	@objc func nameEdditingChangedAction(sender: UITextField) {
@@ -106,29 +85,19 @@ class EdditingViewController: UIViewController {
 	}
 	
 	@objc func datePickerEdditingChangedAction(sender: UIDatePicker) {
-		
 		self.dayOfdeath = setDate(date: sender.date)
 	}
 	
 	
 	@objc func nameEdditingEndAction(sender: UITextField) {
 		self.name = sender.text ?? ""
-//		sender.text = ""
-		print("END name")
 	}
 	
-//	@objc func descriptionEdditingEndAction(sender: UITextField) {
-//		self.desc = sender.text ?? ""
-////		sender.text = ""
-//		print("END desc")
-//	}
-//
-//	@objc func descriptionEdditingChangedAction(sender: UITextField) {
-//		self.desc = sender.text ?? ""
-//	}
 
 	@objc func doneBarButtonAction(sender: UIBarButtonItem) {
-		print("Done button")
+		if textFieldDescription.text.isEmpty {
+			textFieldDescription.text = " "
+		}
 		delegate?.addPersonFromOtherVC(person: Person(name: self.name, dayOfDeath: self.dayOfdeath, description: textFieldDescription.text))
 		self.navigationController?.popViewController(animated: true)
 	}

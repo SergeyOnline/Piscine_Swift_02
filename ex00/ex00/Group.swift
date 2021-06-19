@@ -14,11 +14,10 @@ class Group {
 	var count = 0
 	
 	init() {
-		persons.append(Person(name: "Donald Pmurt", dayOfDeath: "01", description: "Some text"))
-		persons.append(Person(name: "Joffrey Baratheon", dayOfDeath: "02", description: "Some text"))
-		persons.append(Person(name: "Ben Colo", dayOfDeath: "03", description: "Some text"))
-		persons.append(Person(name: "Test Person", dayOfDeath: "04", description: "Test text"))
-		count = 4
+		persons.append(Person(name: "Donald Pmurt", dayOfDeath: "10 June 1996 5:32:00 AM", description: "Got in an accident"))
+		persons.append(Person(name: "Joffrey Baratheon", dayOfDeath: "16 October 1990 8:22:12 PM", description: "Burned out at work"))
+		persons.append(Person(name: "Ben Colo", dayOfDeath: "26 March 2000 11:59:59 PM", description: "Killed by a neighbor"))
+		count = 3
 	}
 	
 	func addNewPerson(_ person: Person) {
