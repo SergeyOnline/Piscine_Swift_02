@@ -27,6 +27,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		tableVeiw.register(UITableViewCell.self, forCellReuseIdentifier: identifire)
 		tableVeiw.dataSource = self
 		tableVeiw.delegate = self
+	
+		
 		self.view.addSubview(tableVeiw)
 	
 		self.navigationItem.title = "Death Note"
@@ -46,10 +48,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		}
 	}
 	
+	func calculateLines(str: String) -> Int {
+		return str.components(separatedBy: "\n").count
+	}
+	
 	//MARK: - Actions
 	
 	@objc func addBarButtonAction(sender: UIBarButtonItem) {
-		print("Add button")
 		let edditingVC = EdditingViewController()
 		edditingVC.delegate = self
 		self.navigationController?.pushViewController(edditingVC, animated: true)
@@ -69,8 +74,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		
-		
 		let cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: identifire, for: indexPath)
 		
 		for value in cell!.subviews {
@@ -79,13 +82,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 				break
 			}
 		}
-		
-//		if cell == nil {
-//			cell = UITableViewCell()
-//			identifire = cell!.reuseIdentifier!
-//			cell = UITableViewCell(style: .value2, reuseIdentifier: identifire)
-//		}
-		
 		
 		let nameLabel = UILabel()
 		nameLabel.text = group.getPersonAtIndex(indexPath.row)?.getName()
@@ -98,14 +94,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		let descriptionLabel = UILabel()
 		descriptionLabel.text = group.getPersonAtIndex(indexPath.row)?.getDescription()
 		descriptionLabel.font = UIFont(name: descriptionLabel.font.familyName, size: 15)
-		
+		descriptionLabel.numberOfLines = calculateLines(str: descriptionLabel.text ?? "")
 		
 		let hStack = UIStackView(arrangedSubviews: [nameLabel, dateLabel])
 		hStack.axis = .horizontal
 		hStack.distribution = .fillEqually
 		hStack.spacing = 2
 		hStack.translatesAutoresizingMaskIntoConstraints = false
-		
 		
 		let vStack = UIStackView(arrangedSubviews: [hStack, descriptionLabel])
 		vStack.axis = .vertical
@@ -118,12 +113,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		vStack.heightAnchor.constraint(equalTo: cell!.heightAnchor, multiplier: 0.95).isActive = true
 		vStack.leftAnchor.constraint(equalTo: cell!.leftAnchor, constant: 30).isActive = true
 		vStack.rightAnchor.constraint(equalTo: cell!.rightAnchor, constant: -20).isActive = true
-		
 		return cell!
 	}
-
 }
-
 
 protocol ViewControllerDelegate: class {
 	func addPersonFromOtherVC(person: Person)
